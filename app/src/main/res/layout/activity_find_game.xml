@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".ui.FindGameActivity">
+
+    <ScrollView
+        android:id="@+id/layaoutProgresBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                app:lottie_fileName="game_loading.json"
+                app:lottie_loop="true"
+                app:lottie_autoPlay="true" />
+
+            <TextView
+                android:id="@+id/textViewLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="@string/string_loading_find_game" />
+
+            <ProgressBar
+                android:id="@+id/progressBarLoading"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/menuJuego"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="62dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/ic_tic_tac_toe" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/buttonPlayGameOnline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:drawableLeft="@drawable/ic_console"
+        android:padding="16dp"
+        android:text="@string/string_btn_jugar"
+        android:textColor="@color/gray_primary"
+        app:layout_constraintEnd_toEndOf="@+id/menuJuego"
+        app:layout_constraintStart_toStartOf="@+id/menuJuego"
+        app:layout_constraintTop_toBottomOf="@+id/menuJuego" />
+
+    <Button
+        android:id="@+id/buttonShowRankin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/gray_primary"
+        android:drawableLeft="@drawable/ic_rank"
+        android:padding="16dp"
+        android:text="@string/string_btn_show_rankin"
+        android:textColor="@color/pinkDark_primary"
+        app:layout_constraintEnd_toEndOf="@+id/buttonPlayGameOnline"
+        app:layout_constraintStart_toStartOf="@+id/buttonPlayGameOnline"
+        app:layout_constraintTop_toBottomOf="@+id/buttonPlayGameOnline" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

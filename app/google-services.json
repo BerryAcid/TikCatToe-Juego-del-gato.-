@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "76497083354",
+    "firebase_url": "https://misappsmoviles-7e186.firebaseio.com",
+    "project_id": "misappsmoviles-7e186",
+    "storage_bucket": "misappsmoviles-7e186.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76497083354:android:7446deec8784c92e99bee3",
+        "android_client_info": {
+          "package_name": "com.berryacid.tikcattoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpRwakjoFB0fYabO1yVrVOfHnqtahAXPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76497083354:android:500047e4b57f9fcf99bee3",
+        "android_client_info": {
+          "package_name": "com.companyname.poleanaxf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76497083354-sqh7djj8mqomqflcorhm3f584i9269ck.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.companyname.poleanaxf",
+            "certificate_hash": "1dc63a91e1d2d4d871e947c0e29bd275701f1776"
+          }
+        },
+        {
+          "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpRwakjoFB0fYabO1yVrVOfHnqtahAXPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76497083354:android:aa6ede6a43ca04a999bee3",
+        "android_client_info": {
+          "package_name": "com.e.poleanaoriginalmora"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76497083354-neis3ei355n2eos0ce58rijjc25k29cv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.e.poleanaoriginalmora",
+            "certificate_hash": "fde4ab7ac960712af2cc86474e2d0c3d72319353"
+          }
+        },
+        {
+          "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpRwakjoFB0fYabO1yVrVOfHnqtahAXPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

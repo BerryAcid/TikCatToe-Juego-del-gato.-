@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">TikCaTToe</string>
+    <string name="string_email">E-mail</string>
+    <string name="string_password">Contraseña</string>
+    <string name="string_login">"Iniciar sesión"</string>
+    <string name="string_name">Nombre</string>
+    <string name="string_reegistro">Registrar</string>
+    <string name="string_go_registrar">Registrarme</string>
+    <string name="string_go_login">Ya tienes una cuenta? da click aquí.</string>
+    <string name="string_loading_find_game">Cargando...</string>
+    <string name="string_btn_jugar">jugar online</string>
+    <string name="string_btn_show_rankin">ver rankin</string>
+    <string name="title_activity_game2">GameActivity2</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="string_player_one">Player 1</string>
+    <string name="string_player_two">Player 2</string>
+    <string name="todo">TODO</string>
+</resources>
