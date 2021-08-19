@@ -1,12 +1,15 @@
 package com.berryacid.tikcattoe.ui;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +20,7 @@ import com.berryacid.tikcattoe.R;
 import com.berryacid.tikcattoe.app.Constantes;
 import com.berryacid.tikcattoe.model.Jugada;
 import com.berryacid.tikcattoe.model.User;
+import com.berryacid.tikcattoe.providers.JugadaProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +42,7 @@ public class GameActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     String nombreJugador;
     User userPlayer1, userPlayer2;
+    JugadaProvider jugadaProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +50,33 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        jugadaProvider = new JugadaProvider();
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        fab.setOnClickListener(view -> Snackbar.make(view, R.string.exit_the_game, Snackbar.LENGTH_LONG)
+                .setAction("Salir", new exitTheGame()).show());
 
         initViews();
         initGame();
 
     }
+
+    public class exitTheGame implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String playingWin = "";
+            if (uId.equals(jugada.getJugadorUnoId())){
+                playingWin = jugada.getJugadorDosId();
+            }else {
+                playingWin = jugada.getJugadorUnoId();
+            }
+            jugadaProvider.updateExitPlayer(jugadaId, uId, playingWin);
+            Toast.makeText(GameActivity.this, "Saliendo de la partida", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(GameActivity.this, FindGameActivity.class);
+            startActivity(intent);
+        }
+    }
+
 
     private void initGame() {
         firebaseAuth = FirebaseAuth.getInstance();
@@ -97,28 +115,24 @@ public class GameActivity extends AppCompatActivity {
         listenerJugada = db.collection("jugadas")
                 .document(jugadaId)
                 .addSnapshotListener(GameActivity.this, (snapshot, error) -> {
-                   if (error != null){
-                       Toast.makeText(this, "Error al obtener los datos del servidor.", Toast.LENGTH_SHORT).show();
-                       return;
-                   }
+                    if (error != null){
+                        Toast.makeText(this, "Error al obtener los datos del servidor.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                   String source = snapshot != null
-                           && snapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
+                    String source = snapshot != null
+                            && snapshot.getMetadata().hasPendingWrites() ? "Local" : "Server";
 
-                   if (snapshot.exists() && source.equals("Server")){
-                       // Parseando DocuemntSnapshot > Jugada
-                       jugada = snapshot.toObject(Jugada.class);
-                       if (playerOneName.isEmpty() || playerTwoName.isEmpty()){
-                           // obtener los nombres de usuario de la jugada
-                           getPlayerNames();
-
-
-                       }
-
-                       updateUI();
-                   }
-                   
-                   updatePlayersUI();
+                    if (snapshot.exists() && source.equals("Server")){
+                        // Parseando DocuemntSnapshot > Jugada
+                        jugada = snapshot.toObject(Jugada.class);
+                        if (playerOneName.isEmpty() || playerTwoName.isEmpty()){
+                            // obtener los nombres de usuario de la jugada
+                            getPlayerNames();
+                        }
+                        updateUI();
+                    }
+                    updatePlayersUI();
                 });
     }
 
@@ -161,8 +175,8 @@ public class GameActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(GameActivity.this, documentSnapshot -> {
                     userPlayer1 = documentSnapshot.toObject(User.class);
-                   playerOneName = documentSnapshot.get("name").toString();
-                   tvPlayer1.setText(playerOneName);
+                    playerOneName = documentSnapshot.get("name").toString();
+                    tvPlayer1.setText(playerOneName);
 
                     if (jugada.getJugadorUnoId().equals(uId)){
                         nombreJugador = playerOneName;
@@ -265,49 +279,49 @@ public class GameActivity extends AppCompatActivity {
             existe = true;
 
         return existe;
-        }
+    }
 
 
     private boolean existeSolucion(){
         boolean existe = false;
 
 
-            List<Integer> selectedCells = jugada.getCeldasSeleccionadas();
-            if (selectedCells.get(0) == selectedCells.get(1)
-            && selectedCells.get(1) == selectedCells.get(2)
-            && selectedCells.get(2) != 0){ // 0 - 1 - 2
-                existe = true;
-            } else if (selectedCells.get(3) == selectedCells.get(4)
-                    && selectedCells.get(4) == selectedCells.get(5)
-                    && selectedCells.get(5) != 0){ // 3 - 4 - 5
-                existe = true;
-            }else if (selectedCells.get(6) == selectedCells.get(7)
-                    && selectedCells.get(7) == selectedCells.get(8)
-                    && selectedCells.get(8) != 0){ // 6 - 7 - 8
-                existe = true;
-            }else if (selectedCells.get(0) == selectedCells.get(3)
-                    && selectedCells.get(3) == selectedCells.get(6)
-                    && selectedCells.get(6) != 0){ // 0 - 3 - 6
-                existe = true;
-            }else if(selectedCells.get(1) == selectedCells.get(4)
-                    && selectedCells.get(4) == selectedCells.get(7)
-                    && selectedCells.get(7) != 0) { // 1 - 4 - 7
-                existe = true;
-            } else if(selectedCells.get(2) == selectedCells.get(5)
-                    && selectedCells.get(5) == selectedCells.get(8)
-                    && selectedCells.get(8) != 0) { // 2 - 5 - 8
-                existe = true;
-            } else if(selectedCells.get(0) == selectedCells.get(4)
-                    && selectedCells.get(4) == selectedCells.get(8)
-                    && selectedCells.get(8) != 0) { // 0 - 4 - 8
-                existe = true;
-            } else if(selectedCells.get(2) == selectedCells.get(4)
-                    && selectedCells.get(4) == selectedCells.get(6)
-                    && selectedCells.get(6) != 0) { // 2 - 4 - 6
-                existe = true;
-            }
+        List<Integer> selectedCells = jugada.getCeldasSeleccionadas();
+        if (selectedCells.get(0) == selectedCells.get(1)
+                && selectedCells.get(1) == selectedCells.get(2)
+                && selectedCells.get(2) != 0){ // 0 - 1 - 2
+            existe = true;
+        } else if (selectedCells.get(3) == selectedCells.get(4)
+                && selectedCells.get(4) == selectedCells.get(5)
+                && selectedCells.get(5) != 0){ // 3 - 4 - 5
+            existe = true;
+        }else if (selectedCells.get(6) == selectedCells.get(7)
+                && selectedCells.get(7) == selectedCells.get(8)
+                && selectedCells.get(8) != 0){ // 6 - 7 - 8
+            existe = true;
+        }else if (selectedCells.get(0) == selectedCells.get(3)
+                && selectedCells.get(3) == selectedCells.get(6)
+                && selectedCells.get(6) != 0){ // 0 - 3 - 6
+            existe = true;
+        }else if(selectedCells.get(1) == selectedCells.get(4)
+                && selectedCells.get(4) == selectedCells.get(7)
+                && selectedCells.get(7) != 0) { // 1 - 4 - 7
+            existe = true;
+        } else if(selectedCells.get(2) == selectedCells.get(5)
+                && selectedCells.get(5) == selectedCells.get(8)
+                && selectedCells.get(8) != 0) { // 2 - 5 - 8
+            existe = true;
+        } else if(selectedCells.get(0) == selectedCells.get(4)
+                && selectedCells.get(4) == selectedCells.get(8)
+                && selectedCells.get(8) != 0) { // 0 - 4 - 8
+            existe = true;
+        } else if(selectedCells.get(2) == selectedCells.get(4)
+                && selectedCells.get(4) == selectedCells.get(6)
+                && selectedCells.get(6) != 0) { // 2 - 4 - 6
+            existe = true;
+        }
 
-            return existe;
+        return existe;
 
     }
 
@@ -347,7 +361,9 @@ public class GameActivity extends AppCompatActivity {
 
         builder.setPositiveButton("Salir", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                finish();
+
+                Intent intent = new Intent(GameActivity.this, FindGameActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -377,5 +393,21 @@ public class GameActivity extends AppCompatActivity {
                 }).addOnFailureListener(e -> {
 
         });
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        String playingWin = "";
+        if (uId.equals(jugada.getJugadorUnoId())){
+            playingWin = jugada.getJugadorDosId();
+        }else {
+            playingWin = jugada.getJugadorUnoId();
+        }
+        jugadaProvider.updateExitPlayer(jugadaId, uId, playingWin);
+        Toast.makeText(GameActivity.this, "Saliendo de la partida", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(GameActivity.this, FindGameActivity.class);
+        startActivity(intent);
     }
 }

@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TikCaTToe">
+        <activity android:name=".ui.RankinActivity"></activity>
         <activity android:name=".ui.GameActivity" />
         <activity android:name=".ui.FindGameActivity" />
         <activity android:name=".ui.RegistroActivity" />

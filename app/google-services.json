@@ -8,12 +8,57 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:76497083354:android:c7d96b9d6b5d2fed99bee3",
+        "android_client_info": {
+          "package_name": "com.berryacid.tictactoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76497083354-9pq2lf2pq474jum976p7gmbne6bcq38r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.berryacid.tictactoe",
+            "certificate_hash": "bb1374dd1202a9b1d3fb275e18e1155db2ca00f0"
+          }
+        },
+        {
+          "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpRwakjoFB0fYabO1yVrVOfHnqtahAXPc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:76497083354:android:7446deec8784c92e99bee3",
         "android_client_info": {
           "package_name": "com.berryacid.tikcattoe"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "76497083354-shs868drrfq53pvi0h4ngmktjot39slc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.berryacid.tikcattoe",
+            "certificate_hash": "bb1374dd1202a9b1d3fb275e18e1155db2ca00f0"
+          }
+        },
         {
           "client_id": "76497083354-r9jrjlsg8an9vf7aligo9tkr5v5a1pjr.apps.googleusercontent.com",
           "client_type": 3

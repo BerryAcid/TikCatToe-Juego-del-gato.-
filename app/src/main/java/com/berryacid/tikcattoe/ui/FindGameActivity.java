@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.berryacid.tikcattoe.R;
 import com.berryacid.tikcattoe.app.Constantes;
 import com.berryacid.tikcattoe.model.Jugada;
+import com.berryacid.tikcattoe.providers.AuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +35,9 @@ public class FindGameActivity extends AppCompatActivity {
     private String uId, jugadaId;
     private ListenerRegistration listenerRegistration = null;
     private LottieAnimationView animationView;
+    private ImageView imageViewLogOut;
+    private AuthProvider authProvider;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +49,24 @@ public class FindGameActivity extends AppCompatActivity {
         layoutMenuJuego = findViewById(R.id.menuJuego);
         btnJugar = findViewById(R.id.buttonPlayGameOnline);
         btnRankin = findViewById(R.id.buttonShowRankin);
+        imageViewLogOut = findViewById(R.id.imageviewExitApp);
+        authProvider = new AuthProvider();
+
+        imageViewLogOut.setOnClickListener(v ->{
+            logoutUser();
+        });
 
         initProgressBar();
         initFireBase();
         eventos();
+    }
+
+
+    private void logoutUser() {
+        authProvider.logout();
+        Intent intent = new Intent(FindGameActivity.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void initFireBase() {
@@ -63,13 +82,24 @@ public class FindGameActivity extends AppCompatActivity {
             buscarJugadaLibre();
         });
         btnRankin.setOnClickListener(v -> {
-            
+            //Toast.makeText(this, "En construcción.", Toast.LENGTH_SHORT).show();
+            goToRanking();
         });
+    }
+
+    private void goToRanking(){
+        if (listenerRegistration != null){
+            listenerRegistration.remove();
+        }
+        Intent intent = new Intent(FindGameActivity.this, RankinActivity.class);
+        //intent.putExtra(Constantes.EXTRA_JUGADA_ID, jugadaId);
+        startActivity(intent);
     }
 
     private void buscarJugadaLibre() {
         tvLoadingMessage.setText("Buscando jugada libre.");
         animationView.playAnimation();
+        imageViewLogOut.setVisibility(View.GONE);
 
         db.collection("jugadas")
                 .whereEqualTo("jugadorDosId", "")
@@ -108,6 +138,7 @@ public class FindGameActivity extends AppCompatActivity {
 
                                         }).addOnFailureListener(e -> {
                                     changeMenuVisibility(true);
+                                    imageViewLogOut.setVisibility(View.VISIBLE);
                                     Toast.makeText(this, "Hubo algún error an entrar a la jugada.", Toast.LENGTH_SHORT).show();
                                 });
                                 break;
@@ -132,32 +163,34 @@ public class FindGameActivity extends AppCompatActivity {
                     // Tenemos creada la jugada, debemos esperar a otro jugador.
                     esperarJugador();
                 }).addOnFailureListener(e ->{
-                    changeMenuVisibility(true);
+            changeMenuVisibility(true);
             Toast.makeText(this, "Error al crear la nueva jugada.", Toast.LENGTH_SHORT).show();
         });
     }
 
     private void esperarJugador() {
-        tvLoadingMessage.setText("Esperando contrincante.");
-        listenerRegistration = db.collection("jugadas")
-        .document(jugadaId)
-        .addSnapshotListener((value, error) -> {
-            if (!value.get("jugadorDosId").equals("")){
-                tvLoadingMessage.setText("!Ya ha llegado un jugador¡ Comineza la partida.");
-                animationView.setRepeatCount(0);
-                animationView.setAnimation("checked_animation.json");
-                animationView.playAnimation();
+        if (!jugadaId.equals("")) {
+            tvLoadingMessage.setText("Esperando contrincante.");
+            listenerRegistration = db.collection("jugadas")
+                    .document(jugadaId)
+                    .addSnapshotListener((value, error) -> {
+                        if (!value.get("jugadorDosId").equals("")) {
+                            tvLoadingMessage.setText("!Ya ha llegado un jugador¡ Comineza la partida.");
+                            animationView.setRepeatCount(0);
+                            animationView.setAnimation("checked_animation.json");
+                            animationView.playAnimation();
 
-                final Handler handler = new Handler();
-                final Runnable runnable = new Runnable() {
-                    @Override
-                    public void run() {
-                        startGame();
-                    }
-                };
-             handler.postDelayed(runnable, 1500);
-            }
-        });
+                            final Handler handler = new Handler();
+                            final Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    startGame();
+                                }
+                            };
+                            handler.postDelayed(runnable, 1500);
+                        }
+                    });
+        }
     }
 
     private void startGame() {
@@ -174,10 +207,9 @@ public class FindGameActivity extends AppCompatActivity {
         animationView = findViewById(R.id.animation_view);
         tvLoadingMessage = findViewById(R.id.textViewLoading);
         progressBar = findViewById(R.id.progressBarLoading);
-
+        
         progressBar.setIndeterminate(true);
         tvLoadingMessage.setText("Cargando...");
-        
         changeMenuVisibility(true);
     }
 
@@ -206,13 +238,15 @@ public class FindGameActivity extends AppCompatActivity {
             listenerRegistration.remove();
         }
 
-        if (jugadaId != "") {
-            db.collection("jugadas")
-                    .document(jugadaId)
-                    .delete()
-                    .addOnCompleteListener(task -> {
-                        jugadaId = "";
-                    });
+        if (jugadaId != null ) {
+            if (!jugadaId.equals("")){
+                db.collection("jugadas")
+                        .document(jugadaId)
+                        .delete()
+                        .addOnCompleteListener(task -> {
+                            jugadaId = "";
+                        });
+            }
         }
         super.onStop();
     }

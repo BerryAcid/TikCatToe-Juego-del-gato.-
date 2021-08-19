@@ -9,10 +9,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 
 import com.berryacid.tikcattoe.R;
+import com.berryacid.tikcattoe.providers.AuthProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -28,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private String email, password;
     boolean tryLogin = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         pbLogin = findViewById(R.id.progressBar);
         btnGoRegistrar = findViewById(R.id.buttonGoRegistrar);
 
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         changeLoginFormVisibility(true);
@@ -47,22 +51,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void eventos() {
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 email = etEmail.getText().toString();
-                 password = etPassword.getText().toString();
+        btnLogin.setOnClickListener(v -> {
+             email = etEmail.getText().toString();
+             password = etPassword.getText().toString();
 
-                if  (email.isEmpty()){
-                    etEmail.setError("El e-mail es obligatorio.");
-                } else if (password.isEmpty()) {
-                    etPassword.setError("La contraseña es obligatoria.");
-                } else {
-                    //TODO: realizar login en Firebase Auth
-                    loginUser();
-                }
-
+            if  (email.isEmpty()){
+                etEmail.setError("El e-mail es obligatorio.");
+            } else if (password.isEmpty()) {
+                etPassword.setError("La contraseña es obligatoria.");
+            } else {
+                //TODO: realizar login en Firebase Auth
+                loginUser();
             }
+
         });
 
         btnGoRegistrar.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +73,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
+
+
 
     private void loginUser() {
         firebaseAuth.signInWithEmailAndPassword(email, password)

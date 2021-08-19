@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TikCaTToe</string>
+    <string name="app_name">TicTacToe</string>
     <string name="string_email">E-mail</string>
     <string name="string_password">Contraseña</string>
     <string name="string_login">"Iniciar sesión"</string>
@@ -22,4 +22,7 @@
     <string name="string_player_one">Player 1</string>
     <string name="string_player_two">Player 2</string>
     <string name="todo">TODO</string>
+    <string name="string_name_playing">Jugador</string>
+    <string name="string_title_points">Puntos</string>
+    <string name="exit_the_game">Realmente deseas abandonar la partida?</string>
 </resources>
